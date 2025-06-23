@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>ConectaComunidade - Próximos Eventos</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        h1 { color: #333; }
+        .evento { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 5px; }
+        .evento a { text-decoration: none; color: #0056b3; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Próximos Eventos na Comunidade</h1>
+    {% if eventos %}
+        {% for evento in eventos %}
+            <div class="evento">
+                <h2><a href="/evento/{{ evento.EventoID }}">{{ evento.Titulo }}</a></h2>
+                <p><strong>Categoria:</strong> {{ evento.NomeCategoria }}</p>
+                <p><strong>Data:</strong> {{ evento.DataHoraInicio.strftime('%d/%m/%Y às %H:%M') }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum evento futuro encontrado.</p>
+    {% endif %}
+</body>
+</html>

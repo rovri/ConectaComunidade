@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Evento</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        h1 { color: #333; }
+        .container { border: 1px solid #ccc; padding: 1em; border-radius: 5px; }
+        a { color: #0056b3; }
+    </style>
+</head>
+<body>
+    {% if evento %}
+        <div class="container">
+            <h1>{{ evento.Titulo }}</h1>
+            <p><strong>Descrição:</strong> {{ evento.Descricao or 'Nenhuma descrição.' }}</p>
+            <p><strong>Data:</strong> {{ evento.DataHoraInicio.strftime('%d/%m/%Y às %H:%M') }}</p>
+
+            <hr>
+            <h3>Participantes Interessados</h3>
+            {% if interessados %}
+                <ul>
+                {% for participante in interessados %}
+                    <li>{{ participante.Nome }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Ninguém demonstrou interesse ainda.</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <h1>Evento não encontrado.</h1>
+    {% endif %}
+    <br>
+    <a href="/">Voltar para a lista de eventos</a>
+</body>
+</html>
