@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import pyodbc
 
 app = Flask(__name__)
@@ -23,12 +23,7 @@ def index():
     eventos = []
     if conn:
         cursor = conn.cursor()
-        query = """
-            SELECT E.EventoID, E.Titulo, C.NomeCategoria, E.DataHoraInicio
-            FROM EVENTO E JOIN CATEGORIA C ON E.CategoriaID_FK = C.CategoriaID
-            WHERE E.DataHoraInicio > GETDATE() ORDER BY E.DataHoraInicio;
-        """
-        cursor.execute(query)
+        cursor.execute("EXEC sp_ListarProximosEventos")
         eventos = cursor.fetchall()
         conn.close()
     return render_template('index.html', eventos=eventos)
@@ -40,12 +35,15 @@ def detalhe_evento(evento_id):
     interessados = []
     if conn:
         cursor = conn.cursor()
+        
         query_evento = "SELECT Titulo, Descricao, DataHoraInicio FROM EVENTO WHERE EventoID = ?;"
         cursor.execute(query_evento, evento_id)
         evento = cursor.fetchone()
         
         query_interessados = """
-            SELECT U.Nome FROM INTERESSE_EVENTO I JOIN USUARIO U ON I.UsuarioID_FK = U.UsuarioID
+            SELECT U.Nome 
+            FROM INTERESSE_EVENTO I
+            JOIN USUARIO U ON I.UsuarioID_FK = U.UsuarioID
             WHERE I.EventoID_FK = ?;
         """
         cursor.execute(query_interessados, evento_id)
