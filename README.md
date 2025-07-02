@@ -9,3 +9,6 @@ Trabalho de Banco de Dados 2
 4. Ajustar a connection string no topo do arquivo 'app.py' se necessário.
 5. Executar o comando 'flask run' no terminal.
 6. Acessar http://127.0.0.1:5000 no navegador.
+
+## Link do vídeo
+https://youtu.be/JZDopTNeG_0?feature=shared
