@@ -11,4 +11,4 @@ Trabalho de Banco de Dados 2
 6. Acessar http://127.0.0.1:5000 no navegador.
 
 ## Link do vídeo
-https://youtu.be/JZDopTNeG_0?feature=shared
+https://www.youtube.com/watch?v=Lf6CnMafkog
