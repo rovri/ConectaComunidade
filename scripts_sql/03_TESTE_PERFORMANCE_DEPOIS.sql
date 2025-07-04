@@ -1,23 +1,26 @@
 -- ===================================================================
--- Teste de Performance DEPOIS das Otimizações
--- Para usar: Execute este script no banco criado pelo script 01.
+-- Script de Teste: 03_TESTE_PERFORMANCE_DEPOIS.sql
+-- Autor: Daniel Del Roveri
+-- Finalidade: Demonstra a performance do banco DEPOIS das otimizações.
+--             Utiliza Stored Procedures e consultas otimizadas.
 -- ===================================================================
 USE ConectaComunidade;
 GO
 
--- Consulta 1: Listagem de próximos eventos (agora usando a Stored Procedure)
--- Plano de execução esperado: Index Seek no índice filtrado IX_EVENTO_Ativos
+-- Consulta 1: Demonstra o uso da Stored Procedure e do índice coberto/filtrado.
+-- Plano de execução esperado: Scan no pequeno índice IX_EVENTO_Ativos_Coberto.
 EXEC sp_ListarProximosEventos;
 GO
 
--- Consulta 2: Busca por palavra-chave (sem alteração, pois a solução ideal seria Full-Text Search)
+-- Consulta 2: Demonstra uma consulta não otimizável por índices B-Tree.
+-- Plano de execução esperado: Clustered Index Scan.
 SELECT Titulo, Descricao, DataHoraInicio
 FROM EVENTO
 WHERE Titulo LIKE '%local%' OR Descricao LIKE '%local%';
 GO
 
--- Consulta 3: Contagem de interessados (usando a versão otimizada com JOIN)
--- Plano de execução esperado: Index Seek no índice IX_INTERESSE_EVENTO_EventoID
+-- Consulta 3: Demonstra o uso do índice na chave estrangeira para otimizar JOINs.
+-- Plano de execução esperado: Plano eficiente com Index Seek ou Hash Match otimizado.
 SELECT E.Titulo, COUNT(I.UsuarioID_FK) AS QtdInteressados
 FROM EVENTO E
 LEFT JOIN INTERESSE_EVENTO I ON E.EventoID = I.EventoID_FK
